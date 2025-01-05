@@ -1,26 +1,25 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import "../../css/Contributor.css"
+import React from 'react';
+import './ContributorCard.css';
 
-function ContributorCard(props) {
-  const { name, img,contributions } = props;
-
+function ContributorCard({ contributor }) {
   return (
-    <>
-      
+    <div className="card">
+      <img
+        src={contributor.img}
+        className="card-img-top"
+        alt={contributor.name}
+      />
+      <div className="card-body">
+        <h5 className="card-title">{contributor.name}</h5>
+        <p className="card-text">SRN: {contributor.srn}</p>
+        {/* <p className="card-text">Contributions: {contributor.contributions}</p> */}
 
-      <div className="card mx-2 my-2" style={{width:"18rem"}}>
-        <img src={img} className="card-img-top" alt="..."/>
-          <div className="card-body ">
-            <h5 className="card-title">{name}</h5>
-            <Link to="/contributor/details" className="btn btn-primary" onClick={()=>{
-              localStorage.setItem('contributorName',name);
-              localStorage.setItem('contributions',contributions);
-            }} >Get Details</Link>
-          </div>
+        {/* <a href="/contributor/details" className="btn btn-primary">
+          Get Details
+        </a> */}
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default ContributorCard
+export default ContributorCard;

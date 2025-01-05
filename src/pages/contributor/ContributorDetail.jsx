@@ -15,34 +15,29 @@ function ContributorDetail() {
       const url = `https://api.github.com/repos/${owner}/${repo}/pulls?state=closed&per_page=100&page=${page}`;
       const response = await axios.get(url);
 
-      console.log(`Fetched PRs from page ${page}:`, response.data);
-
-      // If no more PRs are returned, stop fetching
       if (response.data.length === 0) return allPRs;
 
-      // Recursively fetch the next page of PRs
+      // Recursively fetch next pages
       return await fetchAllPRs(page + 1, [...allPRs, ...response.data]);
     } catch (error) {
       setError(error);
       console.error('Error fetching PRs:', error);
-      return allPRs; // Return what has been fetched so far
+      return allPRs; // Return fetched PRs so far
     }
   };
 
-  // Fetch and filter the merged PRs
+  // Function to fetch and filter merged PRs
   const fetchMergedPRs = async () => {
     try {
       const allPRs = await fetchAllPRs();
-      console.log('All fetched PRs:', allPRs);
 
       // Filter PRs authored by the contributor and merged
       const filteredPRs = allPRs.filter(
         (pr) =>
           pr.user?.login.toLowerCase() === contributorName.toLowerCase() &&
-          pr.merged_at !== null
+          pr.merged_at
       );
 
-      console.log('Filtered PRs:', filteredPRs);
       setMergedPRs(filteredPRs);
     } catch (error) {
       setError(error);
@@ -50,24 +45,32 @@ function ContributorDetail() {
     }
   };
 
+  // Fetch merged PRs on component mount
   useEffect(() => {
-    fetchMergedPRs();
+    if (contributorName) {
+      fetchMergedPRs();
+    } else {
+      setError({ message: "Contributor name is missing in localStorage." });
+    }
   }, []);
 
   return (
-    <>
-      <h2 className="text-center my-4">Merged PRs by {contributorName}</h2>
+    <div className="container my-4">
+      <h2 className="text-center mb-4">Merged PRs by {contributorName}</h2>
 
-      {error && <div className="alert alert-danger">Error: {error.message}</div>}
+      {error && (
+        <div className="alert alert-danger text-center">
+          Error: {error.message || 'Something went wrong.'}
+        </div>
+      )}
 
       {mergedPRs.length > 0 ? (
         <div className="d-flex flex-wrap justify-content-center">
           {mergedPRs.map((pr) => (
-            <div key={pr.number} className="card my-3 mx-2" style={{ width: '350px' }}>
+            <div key={pr.number} className="card mx-3 my-2" style={{ width: '18rem' }}>
               <div className="card-header fw-bold">PR #{pr.number}</div>
               <div className="card-body">
                 <h5 className="card-title">{pr.title}</h5>
-               
                 <a
                   href={pr.html_url}
                   target="_blank"
@@ -76,17 +79,18 @@ function ContributorDetail() {
                 >
                   View on GitHub
                 </a>
-               
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center my-4">
-          No merged PRs available for {contributorName}.
-        </div>
+        !error && (
+          <div className="text-center my-4">
+            <h5>No merged PRs found for {contributorName}.</h5>
+          </div>
+        )
       )}
-    </>
+    </div>
   );
 }
 

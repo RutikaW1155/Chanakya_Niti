@@ -1,0 +1,15 @@
+.card {
+  display: flex;          /* Enable flexbox */
+  flex-direction: column; /* Arrange items vertically */
+  align-items: center;    /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  height: 250px;          /* Set a fixed height for the card */
+  padding-top: 2%;
+}
+
+.card-img-top {
+  width: 150px;           /* Set the image width */
+  height: 150px;          /* Set the image height */
+  object-fit: cover;      /* Prevent distortion */
+  border-radius: 50%;     /* Optional: Make the image circular */
+}
