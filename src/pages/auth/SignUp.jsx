@@ -1,148 +1,207 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "../../css/Auth.css";
-import {
-  FaGithub,
-  FaGoogle,
-  FaXTwitter,
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa6";
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom'; // Import useNavigate
+// import './SignupPage.css';
 
-// for oauth
-import useGoogleOauth from "../../functions/useGoogleOauth";
-import useGithubOauth from "../../functions/useGithubOauth";
-import useXTwitterOauth from "../../functions/useXTwitterOauth";
+// function SignUp() {
+//   const [name, setName] = useState('');
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [age, setAge] = useState('');
+//   const [stream, setStream] = useState('');
+//   const [errorMessage, setErrorMessage] = useState(''); // To display error messages
+//   const navigate = useNavigate(); // Initialize useNavigate
 
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
 
-const URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`;
+//     if (!name || !email || !password || !age || !stream) {
+//       setErrorMessage('All fields are required.');
+//       return;
+//     }
 
+//     const signupData = { name, email, password, age, stream };
 
-const SignUp = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+//     try {
+//       const response = await fetch('http://localhost:5000/signup', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(signupData),
+//       });
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+//       if (response.ok) {
+//         alert('Successfully Signed Up');
+//         setName('');
+//         setEmail('');
+//         setPassword('');
+//         setAge('');
+//         setStream('');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+//         // Redirect to login page after successful sign-up
+//         navigate('/auth/login');
+//       } else {
+//         const errorMessage = await response.text();
+//         setErrorMessage('Error: ' + errorMessage); // Display the error message
+//       }
+//     } catch (error) {
+//       console.error('Error:', error);
+//       setErrorMessage('Failed to sign up. Please try again.');
+//     }
+//   };
+
+//   return (
+//     <div className="signup-page">
+//       <h1>Sign up to Connect with Peers</h1>
+//       <form onSubmit={handleSubmit} className="signup-form">
+//         {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+        
+//         <label>Name</label>
+//         <input
+//           type="text"
+//           value={name}
+//           onChange={(e) => setName(e.target.value)}
+//           required
+//         />
+//         <label>Email</label>
+//         <input
+//           type="email"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//           required
+//         />
+//         <label>Password</label>
+//         <input
+//           type="password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//           required
+//         />
+//         <label>Age</label>
+//         <input
+//           type="number"
+//           value={age}
+//           onChange={(e) => setAge(e.target.value)}
+//           required
+//         />
+//         <label>Stream of Study</label>
+//         <select value={stream} onChange={(e) => setStream(e.target.value)} required>
+//           <option value="">Select Stream</option>
+//           <option value="Science">Science</option>
+//           <option value="Arts">Arts</option>
+//           <option value="Commerce">Commerce</option>
+//         </select>
+//         <button type="submit">Sign Up</button>
+//       </form>
+//     </div>
+//   );
+// }
+
+// export default SignUp;
+
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link } from 'react-router-dom'; // Import Link for navigation
+import './SignupPage.css';
+
+function SignUp() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [age, setAge] = useState('');
+  const [stream, setStream] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // To display error messages
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name || !email || !password || !age || !stream) {
+      setErrorMessage('All fields are required.');
+      return;
+    }
+
+    const signupData = { name, email, password, age, stream };
+
     try {
-      const response = await axios.post(URL, { name, email, password });
-      if (response.data.success) {
-        setSuccess("User created successfully!");
-        window.location.href = "/auth/login";
+      const response = await fetch('http://localhost:5000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(signupData),
+      });
+
+      if (response.ok) {
+        alert('Successfully Signed Up');
+        setName('');
+        setEmail('');
+        setPassword('');
+        setAge('');
+        setStream('');
+
+        // Redirect to login page after successful sign-up
+        navigate('/auth/login');
+      } else {
+        const errorMessage = await response.text();
+        setErrorMessage('Error: ' + errorMessage); // Display the error message
       }
     } catch (error) {
-      setError(error.response?.data?.error || "Something went wrong!");
+      console.error('Error:', error);
+      setErrorMessage('Failed to sign up. Please try again.');
     }
   };
-// hooks to handle oauths
- const { googleLoginSignUp } = useGoogleOauth();
- const { githubLoginSignup } = useGithubOauth();
- const { xTwitterLoginSignup } = useXTwitterOauth();
-
-  //
 
   return (
-    <div className="form-container mb-4">
-      <p className="title">Sign Up</p>
-
-      <form className="form" onSubmit={handleSubmit}>
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
-
-        <div className="input-group">
-          <label htmlFor="name">Your Name</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Enter your name"
-            autoComplete="off"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Enter your email"
-            autoComplete="off"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
-          <div className="password-container">
-            <input
-              type={passwordVisible ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={togglePasswordVisibility}
-            >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
-        </div>
-
-        <button type="submit" className="sign mt-3">
-          Sign Up
-        </button>
+    <div className="signup-page">
+      <h1>Sign up to Connect with Peers</h1>
+      <form onSubmit={handleSubmit} className="signup-form">
+        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+        
+        <label>Name</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <label>Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <label>Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <label>Age</label>
+        <input
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          required
+        />
+        <label>Stream of Study</label>
+        <select value={stream} onChange={(e) => setStream(e.target.value)} required>
+          <option value="">Select Stream</option>
+          <option value="Science">Science</option>
+          <option value="Arts">Arts</option>
+          <option value="Commerce">Commerce</option>
+        </select>
+        <button type="submit">Sign Up</button>
       </form>
 
-      <div className="social-message">
-        <div className="line"></div>
-        <p className="message">Sign up with social accounts</p>
-        <div className="line"></div>
-      </div>
-
-      <div className="social-icons">
-        <button
-          aria-label="Sign up with Google"
-          className="icon"
-          onClick={googleLoginSignUp}
-        >
-          <FaGoogle />
-        </button>
-        <button
-          aria-label="Sign up with Twitter"
-          className="icon"
-          onClick={xTwitterLoginSignup}
-        >
-          <FaXTwitter />
-        </button>
-        <button
-          aria-label="Sign up with GitHub"
-          className="icon"
-          onClick={githubLoginSignup}
-        >
-          <FaGithub />
-        </button>
+      {/* Add link to Login page */}
+      <div className="login-link">
+        <p>Already have an account? <Link to="/auth/login">Login</Link></p>
       </div>
     </div>
   );
-};
+}
 
 export default SignUp;

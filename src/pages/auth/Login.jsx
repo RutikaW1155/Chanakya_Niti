@@ -1,148 +1,120 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "../../css/Auth.css";
-import {
-  FaGithub,
-  FaGoogle,
-  FaXTwitter,
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa6";
 
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import './Login.css';
 
-// for oauth
-import useGoogleOauth from "../../functions/useGoogleOauth";
-import useGithubOauth from "../../functions/useGithubOauth";
-import useXTwitterOauth from "../../functions/useXTwitterOauth";
+// function Login() {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
 
-const URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`;
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.post('http://localhost:5000/login', {
+//         email,
+//         password,
+//       });
+//       alert(response.data);
+//     } catch (error) {
+//       alert('Error logging in');
+//     }
+//   };
 
+//   return (
+//     <div className="login-page">
+//       <h1>Log in to Continue Your Learning Journey</h1>
+//       <form onSubmit={handleSubmit} className="login-form">
+//         <label>Email</label>
+//         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+//         <label>Password</label>
+//         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+//         <button type="submit">Log In</button>
+//       </form>
+//        {/* Add a "Go to Sign Up" option */}
+//        <div className="signup-redirect">
+//         <p>
+//           Don't have an account?{' '}
+//           <span
+//             className="signup-link"
+//             onClick={() => navigate('/auth/SignUp')}  
+//           >
+//             Sign Up
+//           </span>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// }
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+// export default Login;
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
+import './Login.css';
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();  // Initialize the navigate hook
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post(URL, { email, password });
-      if (response.data.success) {
-        setSuccess("Login successful!");
-        localStorage.setItem("authToken", response.data.authtoken);
-        window.location.href = "/";
-      }
+      const response = await axios.post('http://localhost:5000/login', {
+        email,
+        password,
+      });
+  
+      // Store the token or user info in localStorage
+      localStorage.setItem("userToken", response.data.token);
+  
+      // Show the alert
+      alert(response.data.message || "Login successful");
+  
+      // Redirect and force a page reload if necessary
+      navigate('/home', { replace: true }); // Ensure no stack is created for the Login page in history
     } catch (error) {
-      setError(error.response?.data?.error || "Something went wrong!");
+      alert('Error logging in');
     }
   };
-
-  // hooks to handle oauths
-  const { googleLoginSignUp } = useGoogleOauth();
-  const { githubLoginSignup } = useGithubOauth();
-  const { xTwitterLoginSignup } = useXTwitterOauth();
-
-  //
+  
 
   return (
-    <div className="form-container mb-4">
-      <p className="title">Login</p>
-
-      <form className="form" onSubmit={handleSubmit}>
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Enter you email"
-            autoComplete="off"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
-          <div className="password-container">
-            <input
-              type={passwordVisible ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="Enter you password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={togglePasswordVisibility}
-            >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
-
-          <div className="forgot">
-            <a rel="noopener noreferrer" href="#">
-              Forgot Password?
-            </a>
-          </div>
-        </div>
-
-        <button type="submit" className="sign">
-          Sign in
-        </button>
+    <div className="login-page">
+      <h1>Log in to Continue Your Learning Journey</h1>
+      <form onSubmit={handleSubmit} className="login-form">
+        <label>Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <label>Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Log In</button>
       </form>
 
-      <div className="social-message">
-        <div className="line"></div>
-        <p className="message">Login with social accounts</p>
-        <div className="line"></div>
+      {/* "Go to Sign Up" option */}
+      <div className="signup-redirect">
+        <p>
+          Don't have an account?{' '}
+          <span
+            className="signup-link"
+            onClick={() => navigate('/auth/SignUp')}  // Ensure correct path for the SignUp component
+          >
+            Sign Up
+          </span>
+        </p>
       </div>
-
-      <div className="social-icons">
-        <button
-          aria-label="Log in with Google"
-          className="icon"
-          onClick={googleLoginSignUp}
-        >
-          <FaGoogle />
-        </button>
-        <button
-          aria-label="Log in with Twitter"
-          className="icon"
-          onClick={xTwitterLoginSignup}
-        >
-          <FaXTwitter />
-        </button>
-        <button
-          aria-label="Log in with GitHub"
-          className="icon"
-          onClick={githubLoginSignup}
-        >
-          <FaGithub />
-        </button>
-      </div>
-
-      <p className="signup">
-        Don't have an account?
-        <a rel="noopener noreferrer" href="/auth/signup">
-          {" "}
-          Sign up
-        </a>
-      </p>
     </div>
   );
-};
+}
 
 export default Login;

@@ -246,7 +246,7 @@ const Navbar = () => {
                   Contributors
                 </Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link
                   className="nav-link"
                   to="/auth/login"
@@ -255,7 +255,7 @@ const Navbar = () => {
                 >
                   Login
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

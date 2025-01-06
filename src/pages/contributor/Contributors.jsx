@@ -11,16 +11,16 @@ function Contributors() {
     },
     {
       name: 'Gayatri',
-      img: 'https://via.placeholder.com/150',
+      img: '/WhatsApp Image 2025-01-06 at 14.16.37_72fcf59a.jpg',
       contributions: 30,
-      srn: '02fe22bcs088',
+      srn: '02fe22bcs037',
 
     },
     {
       name: 'Priya Prasad',
-      img: 'https://via.placeholder.com/150',
+      img: '/WhatsApp Image 2025-01-06 at 14.18.35_e2c838fe.jpg',
       contributions: 20,
-      srn: '02fe22bcs088',
+      srn: '02fe22bcs073',
 
     },
     {
@@ -32,9 +32,9 @@ function Contributors() {
     },
     {
       name: 'Rohan',
-      img: 'https://via.placeholder.com/150',
+      img: '/WhatsApp Image 2025-01-05 at 22.20.24_868fd4eb.jpg',
       contributions: 40,
-      srn: '02fe22bcs088',
+      srn: '02fe23bcs402',
 
     },
   ];

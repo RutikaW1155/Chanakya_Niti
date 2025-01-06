@@ -1,0 +1,98 @@
+/* Main container for the signup page */
+.signup-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f7fc; /* Light background color */
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Heading for the signup page */
+  .signup-page h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the signup form */
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* Style for form labels */
+  .signup-form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    width: 100%;
+  }
+  
+  /* Style for form inputs */
+  .signup-form input,
+  .signup-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* Style for the submit button */
+  .signup-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745; /* Green color for sign-up */
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .signup-form button:hover {
+    background-color: #218838; /* Darker green on hover */
+  }
+  
+  /* Responsive design: Ensure the form is centered on smaller screens */
+  @media (max-width: 480px) {
+    .signup-page {
+      padding: 10px;
+    }
+  
+    .signup-form {
+      width: 100%;
+      padding: 20px;
+    }
+  
+    .signup-form h1 {
+      font-size: 20px;
+    }
+  }
+  
+
+  .login-link {
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  .login-link a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+  
